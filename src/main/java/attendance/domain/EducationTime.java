@@ -21,11 +21,15 @@ public enum EducationTime {
     public static int calculateOverTime(LocalDateTime attendanceTime) { // todo : 리팩토링 필요
         DayOfWeek dayOfWeek = attendanceTime.getDayOfWeek();
         if (dayOfWeek == MONDAY_DAY_OF_WEEK) {
-            int i = Math.abs(MONDAY.startTime.toSecondOfDay() - attendanceTime.toLocalTime().toSecondOfDay());
-            return Math.abs(i / 60);
+            int i = attendanceTime.toLocalTime().toSecondOfDay() - MONDAY.startTime.toSecondOfDay();
+            int overTime = i / 60;
+
+            return Math.max(overTime, 0);
         }
 
-        int i = NOT_MONDAY.startTime.toSecondOfDay() - attendanceTime.toLocalTime().toSecondOfDay();
-        return Math.abs(i / 60);
+        int i = attendanceTime.toLocalTime().toSecondOfDay() - NOT_MONDAY.startTime.toSecondOfDay();
+        int overTime = i / 60;
+
+        return Math.max(overTime, 0);
     }
 }
