@@ -3,15 +3,17 @@ package attendance.domain;
 import java.util.Arrays;
 
 public enum AttendanceWarningType {
-    EXPULSION(6),
-    COUNSELING(3),
-    WARNING(2),
-    NONE(0)
+    EXPULSION("제적", 6),
+    COUNSELING("면담", 3),
+    WARNING("경고", 2),
+    NONE("해당없음", 0)
     ;
 
+    private final String name;
     private final int threshold;
 
-    AttendanceWarningType(int threshold) {
+    AttendanceWarningType(String name, int threshold) {
+        this.name = name;
         this.threshold = threshold;
     }
 
@@ -21,5 +23,9 @@ public enum AttendanceWarningType {
                 .filter(type -> type.threshold <= allAbsence)
                 .findFirst()
                 .orElse(NONE);
+    }
+
+    public String getName() {
+        return name;
     }
 }
