@@ -21,4 +21,8 @@ public enum AttendanceStatusType {
                 .findFirst()
                 .orElse(ATTENDANCE);
     }
+
+    public String getName() {
+        return name;
+    }
 }
