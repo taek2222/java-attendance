@@ -21,6 +21,10 @@ public class Holiday {
         publicHolidays.add(holiday);
     }
 
+    public boolean isHoliday(LocalDate date) {
+        return date.getDayOfWeek() == SATURDAY || date.getDayOfWeek() == SUNDAY || publicHolidays.contains(date);
+    }
+
     public void validateHoliday(LocalDate date) {
         if (date.getDayOfWeek() == SATURDAY || date.getDayOfWeek() == SUNDAY || publicHolidays.contains(date)) {
             String formatted = String.format("[ERROR] %d월 %d일 %s은 등교일이 아닙니다.",
