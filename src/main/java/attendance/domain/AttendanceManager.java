@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Attendances {
+public class AttendanceManager {
 
     private final Map<String, List<Attendance>> attendances;
     private final Holiday holiday;
     private final DateGenerator dateGenerator;
 
-    public Attendances(Holiday holiday, DateGenerator dateGenerator) {
+    public AttendanceManager(Holiday holiday, DateGenerator dateGenerator) {
         this.attendances = new HashMap<>();
         this.holiday = holiday;
         this.dateGenerator = dateGenerator;

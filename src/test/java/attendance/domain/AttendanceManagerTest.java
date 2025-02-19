@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class AttendancesTest {
+class AttendanceManagerTest {
 
     DateGenerator dateGenerator;
 
@@ -22,13 +22,13 @@ class AttendancesTest {
         // given
         String name = "랜디";
         Holiday holiday = new Holiday();
-        Attendances attendances = new Attendances(holiday, dateGenerator);
+        AttendanceManager attendanceManager = new AttendanceManager(holiday, dateGenerator);
 
         // when
-        attendances.addCrew(name);
+        attendanceManager.addCrew(name);
 
         // then
-        Assertions.assertThat(attendances.findCrewAttendance(name).size())
+        Assertions.assertThat(attendanceManager.findCrewAttendance(name).size())
                 .isEqualTo(22);
     }
 
