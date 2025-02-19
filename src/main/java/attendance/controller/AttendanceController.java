@@ -2,11 +2,11 @@ package attendance.controller;
 
 import attendance.config.AppConfig;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.AttendanceUpdateResult;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
 import attendance.view.OutputView;
-
 import java.time.LocalDate;
 
 public class AttendanceController {
@@ -32,5 +32,10 @@ public class AttendanceController {
             AttendanceResponse response = attendanceService.processAttendance(nowDate);
             outputView.printAttendanceRecord(response);
         }
+        if (command == 2) {
+            AttendanceUpdateResult response = attendanceService.processUpdateAttendance(nowDate);
+            outputView.printAttendUpdateResult(response);
+        }
+
     }
 }
