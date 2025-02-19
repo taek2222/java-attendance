@@ -15,8 +15,8 @@ public class Attendance {
         this.status = AttendanceStatusType.EXPULSION;
     }
 
-    public AttendanceResponse createResponse() {
-        return new AttendanceResponse(dateTime, status.getName());
+    public boolean isEqualDate(LocalDate date) {
+        return dateTime.toLocalDate().isEqual(date);
     }
 
     public void updateTime(LocalTime givenTime) {
