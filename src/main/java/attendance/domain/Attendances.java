@@ -18,4 +18,8 @@ public class Attendances {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 서버 오류가 발생했습니다."));
     }
+
+    public int size() {
+        return attendances.size();
+    }
 }

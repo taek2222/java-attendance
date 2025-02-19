@@ -2,14 +2,12 @@ package attendance.domain;
 
 import attendance.utility.DateGenerator;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AttendanceManager {
 
-    private final Map<String, List<Attendance>> attendances;
+    private final Map<String, Attendances> attendances;
     private final Holiday holiday;
     private final DateGenerator dateGenerator;
 
@@ -20,7 +18,7 @@ public class AttendanceManager {
     }
 
     public void addCrew(String name) {
-        List<Attendance> attendanceList = new ArrayList<>();
+        Attendances newAttendances = new Attendances();
 
         int dayAllCount = dateGenerator.now().lengthOfMonth();
 
@@ -30,14 +28,13 @@ public class AttendanceManager {
                 continue;
             }
 
-            Attendance attendance = new Attendance(date);
-            attendanceList.add(attendance);
+            newAttendances.add(new Attendance(date));
         }
 
-        attendances.put(name, attendanceList);
+        attendances.put(name, newAttendances);
     }
 
-    public List<Attendance> findCrewAttendance(String name) {
+    public Attendances findCrewAttendance(String name) {
         return attendances.get(name);
     }
 }
