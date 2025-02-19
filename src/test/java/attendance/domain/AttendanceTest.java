@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class AttendanceTest {
@@ -23,6 +24,21 @@ class AttendanceTest {
     void 기본_날짜와_시간으로_출석을_생성할_수_있다() {
         assertThatCode(() -> new Attendance(LocalDate.MIN))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("동일 날짜에 여부를 확인한다")
+    @ParameterizedTest
+    @CsvSource({
+            "2024-12-05, 2024-12-05, true",
+            "2024-12-05, 2024-12-06, false"
+    })
+    void 동일_날짜에_여부를_확인한다(LocalDate origin, LocalDate compare, boolean expected) {
+        // given
+        Attendance attendance = new Attendance(origin);
+
+        // then
+        assertThat(attendance.isEqualDate(compare))
+                .isEqualTo(expected);
     }
 
     @DisplayName("출석 시간을 수정할 수 있다.")
