@@ -1,9 +1,13 @@
 package attendance.domain;
 
+import attendance.dto.WarnedStudentResponse;
+import attendance.dto.WarnedStudentResponses;
 import attendance.utility.DateGenerator;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AttendanceManager {
 
@@ -32,6 +36,16 @@ public class AttendanceManager {
         }
 
         attendances.put(name, newAttendances);
+    }
+
+    public WarnedStudentResponses searchWarnedCrews() {
+        Set<String> nicknames = attendances.keySet();
+        List<WarnedStudentResponse> responses = nicknames.stream()
+                .map(nickname -> new WarnedStudentResponse(nickname, attendances.get(nickname).createGroupByStatus()))
+                .filter(response -> !response.attendanceGroupByStatus().warning()
+                        .equals(AttendanceWarningType.NONE.getName()))
+                .toList();
+        return new WarnedStudentResponses(responses);
     }
 
     public boolean isContainNickname(String nickname) {

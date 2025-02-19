@@ -4,7 +4,8 @@ import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
-
+import attendance.dto.WarnedStudentResponse;
+import attendance.dto.WarnedStudentResponses;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -75,5 +76,19 @@ public class OutputView {
 
     private void printStatusCount(Map.Entry<String, Integer> statusCount) {
         System.out.println(statusCount.getKey() + ": " + statusCount.getValue() + "회");
+    }
+
+    public void printWarnedStudents(WarnedStudentResponses response) {
+        System.out.println("제적 위험자 조회 결과");
+        List<WarnedStudentResponse> warnedStudents = response.responses();
+        warnedStudents.forEach(student -> {
+            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",
+                    student.name(),
+                    student.attendanceGroupByStatus().countByStatus().get("결석"),
+                    student.attendanceGroupByStatus().countByStatus().get("지각"),
+                    student.attendanceGroupByStatus().warning()
+            );
+        });
+
     }
 }

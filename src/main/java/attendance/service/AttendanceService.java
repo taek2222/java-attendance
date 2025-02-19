@@ -8,6 +8,7 @@ import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceResponses;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
+import attendance.dto.WarnedStudentResponses;
 import attendance.utility.FileUtil;
 import attendance.view.InputView;
 import java.time.LocalDate;
@@ -67,6 +68,10 @@ public class AttendanceService {
         AttendanceGroupByStatus groupByStatus = attendance.createGroupByStatus();
 
         return new AttendanceSearchResult(nickname, filteredResponses, groupByStatus);
+    }
+
+    public WarnedStudentResponses processWarnedStudent() {
+        return attendanceManager.searchWarnedCrews();
     }
 
     public void initializeAttendance() {

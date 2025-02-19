@@ -4,6 +4,7 @@ import attendance.config.AppConfig;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
+import attendance.dto.WarnedStudentResponses;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
@@ -43,6 +44,9 @@ public class AttendanceController {
             AttendanceSearchResult response = attendanceService.processAttendanceSearch(nowDate);
             outputView.printAttendUpdateResult(response);
         }
-
+        if (command == 4) {
+            WarnedStudentResponses response = attendanceService.processWarnedStudent();
+            outputView.printWarnedStudents(response);
+        }
     }
 }
