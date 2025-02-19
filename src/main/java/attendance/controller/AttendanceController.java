@@ -24,6 +24,8 @@ public class AttendanceController {
     }
 
     public void run() {
+        attendanceService.initializeAttendance();
+
         LocalDate nowDate = dateGenerator.now();
         outputView.printMenu(nowDate);
         int command = Integer.parseInt(inputView.readMenuCommand()); // todo : 추후 검증

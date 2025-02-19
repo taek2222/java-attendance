@@ -5,9 +5,13 @@ import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceUpdateResult;
+import attendance.utility.FileUtil;
 import attendance.view.InputView;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class AttendanceService {
 
@@ -47,6 +51,25 @@ public class AttendanceService {
         findAttendance.updateTime(parseTime);
 
         return new AttendanceUpdateResult(before, findAttendance.createResponse());
+    }
 
+    public void initializeAttendance() {
+        List<String> lines = FileUtil.readFile("attendances.csv");
+        for (String line : lines) {
+            List<String> nicknameAndDateTime = List.of(line.split(","));
+
+            if (!attendanceManager.isContainNickname(nicknameAndDateTime.getFirst())) {
+                attendanceManager.addCrew(nicknameAndDateTime.getFirst());
+            }
+
+            String dateTime = nicknameAndDateTime.get(1);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            LocalDateTime parsedDateTime = LocalDateTime.parse(dateTime, formatter);
+
+            Attendances attendances = attendanceManager.findCrewAttendance(nicknameAndDateTime.getFirst());
+            Attendance attendance = attendances.find(parsedDateTime.toLocalDate());
+            attendance.updateTime(parsedDateTime.toLocalTime());
+        }
     }
 }

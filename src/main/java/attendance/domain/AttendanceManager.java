@@ -34,6 +34,10 @@ public class AttendanceManager {
         attendances.put(name, newAttendances);
     }
 
+    public boolean isContainNickname(String nickname) {
+        return attendances.containsKey(nickname);
+    }
+
     public Attendances findCrewAttendance(String name) {
         return attendances.get(name);
     }
