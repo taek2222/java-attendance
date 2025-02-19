@@ -1,14 +1,17 @@
 package attendance.view;
 
+import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class OutputView {
 
@@ -60,6 +63,17 @@ public class OutputView {
         List<AttendanceResponse> response = result.responses();
 
         response.forEach(this::printAttendanceRecord);
+        System.out.println();
 
+        AttendanceGroupByStatus groupByStatus = result.groupByStatus();
+        Map<String, Integer> countByStatus = groupByStatus.countByStatus();
+        countByStatus.entrySet().forEach(this::printStatusCount);
+        System.out.println();
+
+        System.out.printf("%s 대상자입니다.", groupByStatus.warning()); // todo : 출력 순서랑 이후 날짜 중재
+    }
+
+    private void printStatusCount(Map.Entry<String, Integer> statusCount) {
+        System.out.println(statusCount.getKey() + ": " + statusCount.getValue() + "회");
     }
 }

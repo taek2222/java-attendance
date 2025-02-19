@@ -4,7 +4,8 @@ import java.util.List;
 
 public record AttendanceSearchResult(
         String nickname,
-        List<AttendanceResponse> responses
+        List<AttendanceResponse> responses,
+        AttendanceGroupByStatus groupByStatus
 ) {
 
 }

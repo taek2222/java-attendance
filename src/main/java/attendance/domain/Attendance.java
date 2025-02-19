@@ -25,6 +25,10 @@ public class Attendance {
         status = AttendanceStatusType.find(EducationTime.calculateOverTime(newDateTime));
     }
 
+    public boolean isEqualsStatus(AttendanceStatusType status) {
+        return this.status == status;
+    }
+
     public AttendanceResponse createResponse() {
         return new AttendanceResponse(dateTime, status.getName());
     }

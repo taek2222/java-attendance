@@ -3,6 +3,7 @@ package attendance.service;
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
+import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceResponses;
 import attendance.dto.AttendanceSearchResult;
@@ -57,11 +58,15 @@ public class AttendanceService {
 
     public AttendanceSearchResult processAttendanceSearch(LocalDate nowDate) {
         String nickname = inputView.readNickNameForUpdate();
-        AttendanceResponses response = attendanceManager.findCrewAttendance(nickname).createResponse();
+        Attendances attendance = attendanceManager.findCrewAttendance(nickname);
+        AttendanceResponses response = attendance.createResponse();
         List<AttendanceResponse> filteredResponses = response.responses().stream()
                 .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(nowDate))
                 .toList();
-        return new AttendanceSearchResult(nickname, filteredResponses);
+
+        AttendanceGroupByStatus groupByStatus = attendance.createGroupByStatus();
+
+        return new AttendanceSearchResult(nickname, filteredResponses, groupByStatus);
     }
 
     public void initializeAttendance() {
