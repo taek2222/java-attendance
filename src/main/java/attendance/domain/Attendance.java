@@ -24,4 +24,8 @@ public class Attendance {
         dateTime = newDateTime;
         status = AttendanceStatusType.find(EducationTime.calculateOverTime(newDateTime));
     }
+
+    public AttendanceResponse createResponse() {
+        return new AttendanceResponse(dateTime, status.getName());
+    }
 }
