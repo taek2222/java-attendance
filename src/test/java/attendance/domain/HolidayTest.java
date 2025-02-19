@@ -1,15 +1,14 @@
 package attendance.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class HolidayTest {
 
@@ -23,6 +22,7 @@ class HolidayTest {
     void 등교일이_아닌_경우_예외가_발생한다(LocalDate date) {
         // given
         Holiday holiday = new Holiday();
+        holiday.addHoliday(LocalDate.of(2024, 12, 25));
         String errorMessage = String.format("[ERROR] %d월 %d일 %s은 등교일이 아닙니다.",
                 date.getMonthValue(),
                 date.getDayOfMonth(),
