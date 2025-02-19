@@ -4,6 +4,8 @@ import attendance.domain.Attendance;
 import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.AttendanceResponses;
+import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.utility.FileUtil;
 import attendance.view.InputView;
@@ -51,6 +53,15 @@ public class AttendanceService {
         findAttendance.updateTime(parseTime);
 
         return new AttendanceUpdateResult(before, findAttendance.createResponse());
+    }
+
+    public AttendanceSearchResult processAttendanceSearch(LocalDate nowDate) {
+        String nickname = inputView.readNickNameForUpdate();
+        AttendanceResponses response = attendanceManager.findCrewAttendance(nickname).createResponse();
+        List<AttendanceResponse> filteredResponses = response.responses().stream()
+                .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(nowDate))
+                .toList();
+        return new AttendanceSearchResult(nickname, filteredResponses);
     }
 
     public void initializeAttendance() {

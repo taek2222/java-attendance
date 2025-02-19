@@ -1,10 +1,13 @@
 package attendance.view;
 
 import attendance.dto.AttendanceResponse;
+import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 public class OutputView {
@@ -27,12 +30,19 @@ public class OutputView {
     }
 
     public void printAttendanceRecord(AttendanceResponse response) {
+
         LocalDateTime dateTime = response.dateTime();
-        System.out.printf("%d월 %d일 %s %s (%s)",
+
+        String timeContent = dateTime.toLocalTime().toString();
+        if (dateTime.toLocalTime().equals(LocalTime.MIN)) {
+            timeContent = "--:--";
+        }
+
+        System.out.printf("%d월 %d일 %s %s (%s)\n",
                 dateTime.getMonthValue(),
                 dateTime.getDayOfMonth(),
                 dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA),
-                dateTime.toLocalTime().toString(),
+                timeContent,
                 response.status()
         );
     }
@@ -43,5 +53,13 @@ public class OutputView {
                 result.after().dateTime().toLocalTime(),
                 result.after().status()
         );
+    }
+
+    public void printAttendUpdateResult(AttendanceSearchResult result) {
+        System.out.printf("이번 달 %s의 출석 기록입니다.\n\n", result.nickname());
+        List<AttendanceResponse> response = result.responses();
+
+        response.forEach(this::printAttendanceRecord);
+
     }
 }

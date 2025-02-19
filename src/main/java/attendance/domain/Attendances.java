@@ -1,5 +1,7 @@
 package attendance.domain;
 
+import attendance.dto.AttendanceResponse;
+import attendance.dto.AttendanceResponses;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,5 +23,12 @@ public class Attendances {
 
     public int size() {
         return attendances.size();
+    }
+
+    public AttendanceResponses createResponse() {
+        List<AttendanceResponse> responses = attendances.stream()
+                .map(Attendance::createResponse)
+                .toList();
+        return new AttendanceResponses(responses);
     }
 }

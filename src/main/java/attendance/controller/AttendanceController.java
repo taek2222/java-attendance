@@ -2,6 +2,7 @@ package attendance.controller;
 
 import attendance.config.AppConfig;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
@@ -36,6 +37,10 @@ public class AttendanceController {
         }
         if (command == 2) {
             AttendanceUpdateResult response = attendanceService.processUpdateAttendance(nowDate);
+            outputView.printAttendUpdateResult(response);
+        }
+        if (command == 3) {
+            AttendanceSearchResult response = attendanceService.processAttendanceSearch(nowDate);
             outputView.printAttendUpdateResult(response);
         }
 
