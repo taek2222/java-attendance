@@ -41,11 +41,13 @@ public class AttendanceManager {
     public WarnedStudentResponses searchWarnedCrews(LocalDate date) {
         Set<String> nicknames = attendances.keySet();
         List<WarnedStudentResponse> responses = nicknames.stream()
-                .map(nickname -> new WarnedStudentResponse(nickname, attendances.get(nickname).createCountUntilYesterday(date)))
+                .map(nickname -> new WarnedStudentResponse(nickname,
+                        attendances.get(nickname).createCountUntilYesterday(date)))
                 .filter(response -> !response.attendanceGroupByStatus().warning()
                         .equals(AttendanceWarningType.NONE.getName()))
                 .toList();
-        return new WarnedStudentResponses(responses);
+
+        return new WarnedStudentResponses(responses.stream().sorted().toList());
     }
 
     public boolean isContainNickname(String nickname) {

@@ -9,7 +9,6 @@ import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
 import attendance.view.OutputView;
-
 import java.time.LocalDate;
 
 public class AttendanceController {
@@ -47,7 +46,7 @@ public class AttendanceController {
         }
         if (command == 4) {
             WarnedStudentResponses response = attendanceService.processWarnedStudent(nowDate);
-//            outputView.printWarnedStudents(response);
+            outputView.printWarnedStudents(response);
         }
     }
 }
