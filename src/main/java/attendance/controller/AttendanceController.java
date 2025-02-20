@@ -12,6 +12,7 @@ import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.dto.WarnedStudentResponses;
+import attendance.service.AttendanceInitService;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
@@ -23,17 +24,20 @@ public class AttendanceController {
     private final InputView inputView;
     private final OutputView outputView;
     private final DateGenerator dateGenerator;
+    private final AttendanceInitService attendanceInitService;
     private final AttendanceService attendanceService;
 
     public AttendanceController(AppConfig appConfig) {
         this.inputView = appConfig.getInputView();
         this.outputView = appConfig.getOutputView();
         this.dateGenerator = appConfig.getDateGenerator();
+        this.attendanceInitService = appConfig.getAttendanceInitService();
         this.attendanceService = appConfig.getAttendanceService();
     }
 
     public void run() {
-        attendanceService.initializeAttendance();
+        attendanceInitService.initAttendances();
+
         while (true) {
             LocalDate today = dateGenerator.now();
             AttendanceMenu menu = selectMenu(today);

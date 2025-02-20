@@ -9,12 +9,10 @@ import attendance.dto.AttendanceResponses;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.dto.WarnedStudentResponses;
-import attendance.utility.FileUtil;
 import attendance.view.InputView;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AttendanceService { // todo : 최대한 메서드 분리 작업
@@ -27,11 +25,11 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         this.attendanceManager = attendanceManager;
     }
 
-    public AttendanceResponse processAttendance(LocalDate nowDate) {
+    public AttendanceResponse processAttendance(LocalDate today) {
         String nickname = inputView.readNickname();
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
-        Attendance findAttendance = attendances.find(nowDate);
+        Attendance findAttendance = attendances.find(today);
         validateAlreadyAttendance(findAttendance);
 
         String time = inputView.readAttendanceTime(); // todo : 파싱, 검증 필요
@@ -41,12 +39,12 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         return findAttendance.createResponse();
     }
 
-    public AttendanceUpdateResult processUpdateAttendance(LocalDate nowDate) {
+    public AttendanceUpdateResult processUpdateAttendance(LocalDate today) {
         String nickname = inputView.readNickNameForUpdate();
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
         int day = inputView.readDateForUpdate();
-        LocalDate newDate = nowDate.withDayOfMonth(day); // todo : 파싱, 검증 필요
+        LocalDate newDate = today.withDayOfMonth(day); // todo : 파싱, 검증 필요
 
         String time = inputView.readAttendanceTimeForUpdate();
         LocalTime parseTime = LocalTime.parse(time); // todo : 파싱, 검증 필요
@@ -59,41 +57,21 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         return new AttendanceUpdateResult(before, findAttendance.createResponse());
     }
 
-    public AttendanceSearchResult processAttendanceSearch(LocalDate nowDate) {
+    public AttendanceSearchResult processAttendanceSearch(LocalDate today) {
         String nickname = inputView.readNickNameForUpdate();
         Attendances attendance = attendanceManager.findCrewAttendance(nickname);
         AttendanceResponses response = attendance.createResponse();
         List<AttendanceResponse> filteredResponses = response.responses().stream()
-                .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(nowDate))
+                .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(today))
                 .toList();
 
-        AttendanceGroupByStatus groupByStatus = attendance.createCountUntilYesterday(nowDate);
+        AttendanceGroupByStatus groupByStatus = attendance.createCountUntilYesterday(today);
 
         return new AttendanceSearchResult(nickname, filteredResponses, groupByStatus);
     }
 
-    public WarnedStudentResponses processWarnedStudent(LocalDate nowDate) {
-        return attendanceManager.searchWarnedCrews(nowDate);
-    }
-
-    public void initializeAttendance() { // todo : 메서드 분리 및 서비스 클래스 별도 관리 고려
-        List<String> lines = FileUtil.readFile("attendances.csv"); // todo : 파일 상수 분리
-        for (String line : lines) {
-            List<String> nicknameAndDateTime = List.of(line.split(","));
-
-            if (attendanceManager.isNotContainNickname(nicknameAndDateTime.getFirst())) {
-                attendanceManager.addCrew(nicknameAndDateTime.getFirst());
-            }
-
-            String dateTime = nicknameAndDateTime.get(1);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-            LocalDateTime parsedDateTime = LocalDateTime.parse(dateTime, formatter);
-
-            Attendances attendances = attendanceManager.findCrewAttendance(nicknameAndDateTime.getFirst());
-            Attendance attendance = attendances.find(parsedDateTime.toLocalDate());
-            attendance.updateTime(parsedDateTime.toLocalTime());
-        }
+    public WarnedStudentResponses processWarnedStudent(LocalDate today) {
+        return attendanceManager.searchWarnedCrews(today);
     }
 
     private void validateAlreadyAttendance(Attendance attendance) {
