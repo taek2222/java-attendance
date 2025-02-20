@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class AttendanceManager {
 
@@ -22,18 +23,13 @@ public class AttendanceManager {
     }
 
     public void addCrew(String name) {
-        Attendances newAttendances = new Attendances();
-
         int dayAllCount = dateGenerator.now().lengthOfMonth();
 
-        for (int i = 1; i <= dayAllCount; i++) {
-            LocalDate date = dateGenerator.now().withDayOfMonth(i);
-            if (holiday.isHoliday(date)) {
-                continue;
-            }
-
-            newAttendances.add(new Attendance(date));
-        }
+        Attendances newAttendances = new Attendances();
+        IntStream.range(1, dayAllCount)
+                .mapToObj(index -> dateGenerator.now().withDayOfMonth(index))
+                .filter(date -> !holiday.isHoliday(date))
+                .forEach(date -> newAttendances.add(new Attendance(date)));
 
         attendances.put(name, newAttendances);
     }
