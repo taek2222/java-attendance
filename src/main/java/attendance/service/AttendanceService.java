@@ -8,14 +8,13 @@ import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
 import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
-import attendance.dto.AttendanceResponses;
+import attendance.dto.AttendanceRecordUntilToday;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.dto.WarnedStudentResponses;
 import attendance.view.InputView;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class AttendanceService { // todo : 최대한 메서드 분리 작업
 
@@ -63,14 +62,10 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
     public AttendanceSearchResult processAttendanceSearch(LocalDate today) {
         String nickname = inputView.readNickNameForUpdate();
         Attendances attendance = attendanceManager.findCrewAttendance(nickname);
-        AttendanceResponses response = attendance.createResponse();
-        List<AttendanceResponse> filteredResponses = response.responses().stream()
-                .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(today))
-                .toList();
 
+        AttendanceRecordUntilToday recordUntilToday = attendance.createRecordUntilTodayResponse(today);
         AttendanceGroupByStatus groupByStatus = attendance.createCountUntilYesterday(today);
-
-        return new AttendanceSearchResult(nickname, filteredResponses, groupByStatus);
+        return new AttendanceSearchResult(nickname, recordUntilToday, groupByStatus);
     }
 
     public WarnedStudentResponses processWarnedStudent(LocalDate today) {

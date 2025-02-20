@@ -59,7 +59,7 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
 
     public void printAttendUpdateResult(AttendanceSearchResult result) {
         System.out.printf("이번 달 %s의 출석 기록입니다.\n\n", result.nickname());
-        List<AttendanceResponse> response = result.responses();
+        List<AttendanceResponse> response = result.recordUntilToday().responses();
 
         response.forEach(this::printAttendanceRecord);
         System.out.println();

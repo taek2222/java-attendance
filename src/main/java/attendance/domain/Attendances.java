@@ -2,7 +2,7 @@ package attendance.domain;
 
 import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
-import attendance.dto.AttendanceResponses;
+import attendance.dto.AttendanceRecordUntilToday;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,11 +45,12 @@ public class Attendances {
         return attendances.size();
     }
 
-    public AttendanceResponses createResponse() {
+    public AttendanceRecordUntilToday createRecordUntilTodayResponse(LocalDate today) {
         List<AttendanceResponse> responses = attendances.stream()
                 .map(Attendance::createResponse)
+                .filter(response -> response.dateTime().toLocalDate().isBefore(today))
                 .toList();
-        return new AttendanceResponses(responses);
+        return new AttendanceRecordUntilToday(responses);
     }
 
     private int calculateStatusUntilYesterday(AttendanceStatusType status, LocalDate date) {
