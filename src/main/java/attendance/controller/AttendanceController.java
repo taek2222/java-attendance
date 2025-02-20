@@ -58,8 +58,8 @@ public class AttendanceController {
                 if (menu == WARNED_CREW) {
                     WarnedStudentResponses response = attendanceService.processWarnedStudent(today);
                     outputView.printWarnedStudents(response);
-                    return;
                 }
+                return;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
@@ -72,8 +72,8 @@ public class AttendanceController {
                 if (menu == SEARCH) {
                     AttendanceSearchResult response = attendanceService.processAttendanceSearch(today);
                     outputView.printAttendUpdateResult(response);
-                    return;
                 }
+                return;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
@@ -86,8 +86,8 @@ public class AttendanceController {
                 if (menu == UPDATE) {
                     AttendanceUpdateResult response = attendanceService.processUpdateAttendance(today);
                     outputView.printAttendUpdateResult(response);
-                    return;
                 }
+                return;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
@@ -100,14 +100,13 @@ public class AttendanceController {
                 if (menu == CHECK) {
                     AttendanceResponse response = attendanceService.processAttendance(today);
                     outputView.printAttendanceRecord(response);
-                    return;
                 }
+                return;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
         }
     }
-
 
     private AttendanceMenu selectMenu(LocalDate today) {
         while (true) {
