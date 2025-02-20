@@ -79,7 +79,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         for (String line : lines) {
             List<String> nicknameAndDateTime = List.of(line.split(","));
 
-            if (!attendanceManager.isContainNickname(nicknameAndDateTime.getFirst())) {
+            if (attendanceManager.isNotContainNickname(nicknameAndDateTime.getFirst())) {
                 attendanceManager.addCrew(nicknameAndDateTime.getFirst());
             }
 

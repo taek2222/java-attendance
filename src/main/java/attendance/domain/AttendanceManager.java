@@ -50,12 +50,12 @@ public class AttendanceManager {
         return new WarnedStudentResponses(responses.stream().sorted().toList());
     }
 
-    public boolean isContainNickname(String nickname) {
-        return attendances.containsKey(nickname);
+    public boolean isNotContainNickname(String nickname) {
+        return !attendances.containsKey(nickname);
     }
 
     public Attendances findCrewAttendance(String nickname) {
-        if (!isContainNickname(nickname)) {
+        if (isNotContainNickname(nickname)) {
             throw new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다.");
         }
         return attendances.get(nickname);
