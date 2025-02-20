@@ -1,9 +1,10 @@
 package attendance.dto;
 
-import java.util.Map;
-
 public record AttendanceGroupByStatus(
-        Map<String, Integer> countByStatus,
+        int expulsion,
+        int late,
+        int attendance,
         String warning
 ) {
+
 }

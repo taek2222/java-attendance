@@ -6,10 +6,7 @@ import attendance.dto.AttendanceResponses;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Attendances {
 
@@ -27,21 +24,19 @@ public class Attendances {
     }
 
     public AttendanceGroupByStatus createGroupByStatus() {
-        LinkedHashMap<String, Integer> countByStatus = Arrays.stream(AttendanceStatusType.values())
-                .collect(Collectors.toMap(
-                        AttendanceStatusType::getName,
-                        this::calculateStatus,
-                        (existing, replacement) -> existing,
-                        LinkedHashMap::new
-                ));
+        int expulsion = calculateStatus(AttendanceStatusType.EXPULSION);
+        int late = calculateStatus(AttendanceStatusType.LATE);
+        int attendance = calculateStatus(AttendanceStatusType.ATTENDANCE);
 
         AttendanceWarningType warning = AttendanceWarningType.find(
-                countByStatus.get(AttendanceStatusType.EXPULSION.getName()),
-                countByStatus.get(AttendanceStatusType.LATE.getName())
+                expulsion,
+                late
         );
 
         return new AttendanceGroupByStatus(
-                countByStatus,
+                expulsion,
+                late,
+                attendance,
                 warning.getName()
         );
     }

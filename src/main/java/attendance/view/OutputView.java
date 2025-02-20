@@ -4,15 +4,13 @@ import attendance.dto.AttendanceGroupByStatus;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
-import attendance.dto.WarnedStudentResponse;
-import attendance.dto.WarnedStudentResponses;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class OutputView { // todo : 상수 분리 적용 필요, response 파라미터 네이밍 통일, 메서드 순서 정렬
 
@@ -66,28 +64,31 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
         System.out.println();
 
         AttendanceGroupByStatus groupByStatus = result.groupByStatus();
-        Map<String, Integer> countByStatus = groupByStatus.countByStatus();
-        countByStatus.entrySet().forEach(this::printStatusCount);
-        System.out.println();
 
+        System.out.printf("""
+                        출석: %d회
+                        지각: %d회
+                        결석: %d회
+                        """,
+                groupByStatus.attendance(),
+                groupByStatus.late(),
+                groupByStatus.expulsion()
+        );
+
+        System.out.println();
         System.out.printf("%s 대상자입니다.", groupByStatus.warning()); // todo : 출력 순서랑 이후 날짜 중재
     }
 
-    private void printStatusCount(Map.Entry<String, Integer> statusCount) {
-        System.out.println(statusCount.getKey() + ": " + statusCount.getValue() + "회");
-    }
-
-    public void printWarnedStudents(WarnedStudentResponses response) {
-        System.out.println("제적 위험자 조회 결과");
-        List<WarnedStudentResponse> warnedStudents = response.responses();
-        warnedStudents.forEach(student -> {
-            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",
-                    student.name(),
-                    student.attendanceGroupByStatus().countByStatus().get("결석"),
-                    student.attendanceGroupByStatus().countByStatus().get("지각"),
-                    student.attendanceGroupByStatus().warning()
-            );
-        });
-
-    }
+//    public void printWarnedStudents(WarnedStudentResponses response) {
+//        System.out.println("제적 위험자 조회 결과");
+//        List<WarnedStudentResponse> warnedStudents = response.responses();
+//        warnedStudents.forEach(student -> {
+//            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",
+//                    student.name(),
+//                    student.attendanceGroupByStatus().countByStatus().get("결석"),
+//                    student.attendanceGroupByStatus().countByStatus().get("지각"),
+//                    student.attendanceGroupByStatus().warning()
+//            );
+//        });
+//    }
 }
