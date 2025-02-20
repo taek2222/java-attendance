@@ -6,16 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-public class FileUtil { // todo : 상속 및 객체 생성 방지
+public final class FileUtil {
 
+    private static final int HEADER_LINE_INDEX = 1;
     private static final String DIRECTORY_PATH = "src/main/resources/";
 
-    public static List<String> readFile(String fileName) {
+    private FileUtil() {
+    }
+
+    public static List<String> readFile(final String fileName) {
         BufferedReader fileReader = openFileReader(fileName);
         return parseLines(fileReader);
     }
 
-    private static BufferedReader openFileReader(String fileName) {
+    private static BufferedReader openFileReader(final String fileName) {
         try {
             File file = new File(DIRECTORY_PATH + fileName);
             FileReader fileReader = new FileReader(file);
@@ -25,8 +29,8 @@ public class FileUtil { // todo : 상속 및 객체 생성 방지
         }
     }
 
-    private static List<String> parseLines(BufferedReader fileReader) {
+    private static List<String> parseLines(final BufferedReader fileReader) {
         List<String> lines = fileReader.lines().toList();
-        return lines.subList(1, lines.size()); // todo : 1 상수 분리 후 의미 적용
+        return lines.subList(HEADER_LINE_INDEX, lines.size());
     }
 }
