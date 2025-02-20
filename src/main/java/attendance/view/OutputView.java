@@ -92,4 +92,8 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
             );
         });
     }
+
+    public void printErrorMessage(String message) {
+        System.out.println(message);
+    }
 }
