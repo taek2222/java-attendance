@@ -27,11 +27,7 @@ public class Attendances {
         int expulsion = calculateStatusUntilYesterday(AttendanceStatusType.EXPULSION, date);
         int late = calculateStatusUntilYesterday(AttendanceStatusType.LATE, date);
         int attendance = calculateStatusUntilYesterday(AttendanceStatusType.ATTENDANCE, date);
-
-        AttendanceWarningType warning = AttendanceWarningType.find(
-                expulsion,
-                late
-        );
+        AttendanceWarningType warning = AttendanceWarningType.find(expulsion, late);
 
         return new AttendanceGroupByStatus(
                 expulsion,
