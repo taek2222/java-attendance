@@ -23,10 +23,10 @@ public class Attendances {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 서버 오류가 발생했습니다."));
     }
 
-    public AttendanceGroupByStatus createGroupByStatus() {
-        int expulsion = calculateStatus(AttendanceStatusType.EXPULSION);
-        int late = calculateStatus(AttendanceStatusType.LATE);
-        int attendance = calculateStatus(AttendanceStatusType.ATTENDANCE);
+    public AttendanceGroupByStatus createCountUntilYesterday(LocalDate date) {
+        int expulsion = calculateStatusUntilYesterday(AttendanceStatusType.EXPULSION, date);
+        int late = calculateStatusUntilYesterday(AttendanceStatusType.LATE, date);
+        int attendance = calculateStatusUntilYesterday(AttendanceStatusType.ATTENDANCE, date);
 
         AttendanceWarningType warning = AttendanceWarningType.find(
                 expulsion,
@@ -52,8 +52,9 @@ public class Attendances {
         return new AttendanceResponses(responses);
     }
 
-    private int calculateStatus(AttendanceStatusType status) {
+    private int calculateStatusUntilYesterday(AttendanceStatusType status, LocalDate date) {
         return (int) attendances.stream()
+                .filter(attendance -> attendance.isBefore(date))
                 .filter(attendance -> attendance.isEqualsStatus(status))
                 .count();
     }

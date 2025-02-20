@@ -29,6 +29,10 @@ public class Attendance {
         return this.status == status;
     }
 
+    public boolean isBefore(LocalDate date) {
+        return dateTime.toLocalDate().isBefore(date);
+    }
+
     public AttendanceResponse createResponse() {
         return new AttendanceResponse(dateTime, status.getName());
     }

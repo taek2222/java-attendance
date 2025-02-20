@@ -46,7 +46,7 @@ public class AttendanceController {
             outputView.printAttendUpdateResult(response);
         }
         if (command == 4) {
-            WarnedStudentResponses response = attendanceService.processWarnedStudent();
+            WarnedStudentResponses response = attendanceService.processWarnedStudent(nowDate);
 //            outputView.printWarnedStudents(response);
         }
     }

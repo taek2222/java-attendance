@@ -65,13 +65,13 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
                 .filter(attendanceResponse -> attendanceResponse.dateTime().toLocalDate().isBefore(nowDate))
                 .toList();
 
-        AttendanceGroupByStatus groupByStatus = attendance.createGroupByStatus();
+        AttendanceGroupByStatus groupByStatus = attendance.createCountUntilYesterday(nowDate);
 
         return new AttendanceSearchResult(nickname, filteredResponses, groupByStatus);
     }
 
-    public WarnedStudentResponses processWarnedStudent() {
-        return attendanceManager.searchWarnedCrews();
+    public WarnedStudentResponses processWarnedStudent(LocalDate nowDate) {
+        return attendanceManager.searchWarnedCrews(nowDate);
     }
 
     public void initializeAttendance() { // todo : 메서드 분리 및 서비스 클래스 별도 관리 고려

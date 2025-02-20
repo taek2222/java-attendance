@@ -38,10 +38,10 @@ public class AttendanceManager {
         attendances.put(name, newAttendances);
     }
 
-    public WarnedStudentResponses searchWarnedCrews() {
+    public WarnedStudentResponses searchWarnedCrews(LocalDate date) {
         Set<String> nicknames = attendances.keySet();
         List<WarnedStudentResponse> responses = nicknames.stream()
-                .map(nickname -> new WarnedStudentResponse(nickname, attendances.get(nickname).createGroupByStatus()))
+                .map(nickname -> new WarnedStudentResponse(nickname, attendances.get(nickname).createCountUntilYesterday(date)))
                 .filter(response -> !response.attendanceGroupByStatus().warning()
                         .equals(AttendanceWarningType.NONE.getName()))
                 .toList();
