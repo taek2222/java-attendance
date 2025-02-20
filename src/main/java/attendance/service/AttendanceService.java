@@ -1,5 +1,8 @@
 package attendance.service;
 
+import static attendance.utility.DateTimeParser.parseDateByDay;
+import static attendance.utility.DateTimeParser.parseTime;
+
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
@@ -10,7 +13,6 @@ import attendance.dto.AttendanceSearchResult;
 import attendance.dto.AttendanceUpdateResult;
 import attendance.dto.WarnedStudentResponses;
 import attendance.view.InputView;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -27,13 +29,14 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
 
     public AttendanceResponse processAttendance(LocalDate today) {
         String nickname = inputView.readNickname();
-        Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
+
+        Attendances attendances = attendanceManager.findCrewAttendance(nickname);
 
         Attendance findAttendance = attendances.find(today);
         validateAlreadyAttendance(findAttendance);
 
-        String time = inputView.readAttendanceTime(); // todo : 파싱, 검증 필요
-        LocalTime parseTime = LocalTime.parse(time);
+        String time = inputView.readAttendanceTime();
+        LocalTime parseTime = parseTime(time);
 
         findAttendance.updateTime(parseTime);
         return findAttendance.createResponse();
@@ -44,10 +47,10 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
         int day = inputView.readDateForUpdate();
-        LocalDate newDate = today.withDayOfMonth(day); // todo : 파싱, 검증 필요
+        LocalDate newDate = parseDateByDay(today, day);
 
         String time = inputView.readAttendanceTimeForUpdate();
-        LocalTime parseTime = LocalTime.parse(time); // todo : 파싱, 검증 필요
+        LocalTime parseTime = parseTime(time);
 
         Attendance findAttendance = attendances.find(newDate);
         AttendanceResponse before = findAttendance.createResponse();
