@@ -26,7 +26,7 @@ public class AttendanceManager {
         int dayAllCount = dateGenerator.now().lengthOfMonth();
 
         Attendances newAttendances = new Attendances();
-        IntStream.range(1, dayAllCount)
+        IntStream.range(1, dayAllCount + 1)
                 .mapToObj(index -> dateGenerator.now().withDayOfMonth(index))
                 .filter(date -> !holiday.isHoliday(date))
                 .forEach(date -> newAttendances.add(new Attendance(date)));
