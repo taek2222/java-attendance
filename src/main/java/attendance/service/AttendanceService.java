@@ -57,7 +57,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
     }
 
     public AttendanceSearchResult processAttendanceSearch(LocalDate today) {
-        String nickname = inputView.readNickname(true);
+        String nickname = inputView.readNickname(false);
         Attendances attendance = attendanceManager.findCrewAttendance(nickname);
 
         AttendanceRecordUntilToday recordUntilToday = attendance.createRecordUntilTodayResponse(today);
@@ -75,7 +75,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
     }
 
     private LocalTime parseTime(boolean isForUpdated) {
-        String time = inputView.readAttendanceTime(true);
+        String time = inputView.readAttendanceTime(isForUpdated);
         return DateTimeParser.parseTime(time);
     }
 
