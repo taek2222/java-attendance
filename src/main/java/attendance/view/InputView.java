@@ -4,8 +4,9 @@ import static attendance.view.InputValidator.validateIsNumeric;
 
 import java.util.Scanner;
 
-public class InputView { // todo : 상수 분리, 최소한의 검증 후 반환
+public class InputView {
 
+    private static final String NEW_LINE = System.lineSeparator();
     private static final Scanner console = new Scanner(System.in);
 
     public String readMenuCommand() {
@@ -14,11 +15,11 @@ public class InputView { // todo : 상수 분리, 최소한의 검증 후 반환
 
     public String readNickname(boolean isForUpdated) {
         if (!isForUpdated) {
-            System.out.println("닉네임을 입력해 주세요.");
+            System.out.println(NEW_LINE + "닉네임을 입력해 주세요.");
         }
 
         if (isForUpdated) {
-            System.out.println("출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
+            System.out.println(NEW_LINE + "출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
         }
         return console.nextLine();
     }

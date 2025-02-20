@@ -15,7 +15,8 @@ import java.util.Locale;
 
 public class OutputView { // todo : 상수 분리 적용 필요, response 파라미터 네이밍 통일, 메서드 순서 정렬
 
-    private static final String OUTPUT_MENU = """
+    private static final String NEW_LINE = System.lineSeparator();
+    private static final String OUTPUT_MENU = NEW_LINE + NEW_LINE + """
             오늘은 %d월 %d일 %s입니다. 기능을 선택해 주세요.
             1. 출석 확인
             2. 출석 수정
@@ -40,7 +41,7 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
             timeContent = "--:--";
         }
 
-        System.out.printf("%d월 %d일 %s %s (%s)\n",
+        System.out.printf(NEW_LINE + "%d월 %d일 %s %s (%s)",
                 dateTime.getMonthValue(),
                 dateTime.getDayOfMonth(),
                 dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA),
@@ -51,14 +52,14 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
 
     public void printAttendUpdateResult(AttendanceUpdateResult result) {
         printAttendanceRecord(result.before());
-        System.out.printf(" -> %s (%s) 수정 완료",
+        System.out.printf(" -> %s (%s) 수정 완료!",
                 result.after().dateTime().toLocalTime(),
                 result.after().status()
         );
     }
 
     public void printAttendUpdateResult(AttendanceSearchResult result) {
-        System.out.printf("이번 달 %s의 출석 기록입니다.\n\n", result.nickname());
+        System.out.printf(NEW_LINE + "이번 달 %s의 출석 기록입니다." + NEW_LINE, result.nickname());
         List<AttendanceResponse> response = result.recordUntilToday().responses();
 
         response.forEach(this::printAttendanceRecord);
@@ -66,7 +67,7 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
 
         AttendanceGroupByStatus groupByStatus = result.groupByStatus();
 
-        System.out.printf("""
+        System.out.printf(NEW_LINE + """
                         출석: %d회
                         지각: %d회
                         결석: %d회
@@ -81,10 +82,10 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
     }
 
     public void printWarnedStudents(WarnedStudentResponses response) {
-        System.out.println("제적 위험자 조회 결과");
+        System.out.print(NEW_LINE + "제적 위험자 조회 결과");
         List<WarnedStudentResponse> warnedStudents = response.responses();
         warnedStudents.forEach(student -> {
-            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",
+            System.out.printf("\n- %s: 결석 %d회, 지각 %d회 (%s)",
                     student.name(),
                     student.attendanceGroupByStatus().expulsion(),
                     student.attendanceGroupByStatus().late(),
@@ -94,6 +95,6 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
     }
 
     public void printErrorMessage(String message) {
-        System.out.println(message);
+        System.out.println(System.lineSeparator() + message);
     }
 }
