@@ -14,9 +14,9 @@ public class Holiday {
 
     private final List<LocalDate> publicHolidays = new ArrayList<>(); // todo : 공휴일 네이밍 의문, 객체 생성 과정 의문
 
-    public void addHoliday(LocalDate holiday) {
+    public void addHoliday(LocalDate holiday) { // todo : 파라미터 네이밍 고민, 크리스마스 추가
         if (publicHolidays.contains(holiday)) {
-            throw new IllegalArgumentException("[ERROR] 이미 추가된 휴일입니다.");
+            throw new IllegalArgumentException("[ERROR] 이미 추가된 휴일입니다."); // todo : 에러 메시지 분리
         }
         publicHolidays.add(holiday);
     }
@@ -26,7 +26,7 @@ public class Holiday {
     }
 
     public void validateHoliday(LocalDate date) {
-        if (date.getDayOfWeek() == SATURDAY || date.getDayOfWeek() == SUNDAY || publicHolidays.contains(date)) {
+        if (date.getDayOfWeek() == SATURDAY || date.getDayOfWeek() == SUNDAY || publicHolidays.contains(date)) { // todo : 메서드 재사용
             String formatted = String.format("[ERROR] %d월 %d일 %s은 등교일이 아닙니다.",
                     date.getMonthValue(),
                     date.getDayOfMonth(),

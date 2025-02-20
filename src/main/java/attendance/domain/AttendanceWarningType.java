@@ -17,7 +17,7 @@ public enum AttendanceWarningType {
         this.threshold = threshold;
     }
 
-    public static AttendanceWarningType find(final int absence, final int late) {
+    public static AttendanceWarningType find(final int absence, final int late) { // todo : findBy~~ 네이밍 의논
         int allAbsence = absence + (late / 3);
         return Arrays.stream(AttendanceWarningType.values())
                 .filter(type -> type.threshold <= allAbsence)

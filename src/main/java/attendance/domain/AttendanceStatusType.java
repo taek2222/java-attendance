@@ -15,7 +15,7 @@ public enum AttendanceStatusType {
         this.threshold = threshold;
     }
 
-    public static AttendanceStatusType find(int overTime) {
+    public static AttendanceStatusType find(int overTime) { // todo : findBy~~ 네이밍 의논, static 선언, 필터 인자 status는 어떤지
         return Arrays.stream(AttendanceStatusType.values())
                 .filter(type -> type.threshold < overTime)
                 .findFirst()

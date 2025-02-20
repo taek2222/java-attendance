@@ -2,7 +2,7 @@ package attendance.view;
 
 import java.util.Scanner;
 
-public class InputView {
+public class InputView { // todo : 상수 분리, 최소한의 검증 후 반환
 
     private static final Scanner console = new Scanner(System.in);
 

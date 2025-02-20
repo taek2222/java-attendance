@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class OutputView {
+public class OutputView { // todo : 상수 분리 적용 필요, response 파라미터 네이밍 통일, 메서드 순서 정렬
 
     private static final String OUTPUT_MENU = """
             오늘은 %d월 %d일 %s입니다. 기능을 선택해 주세요.
@@ -25,19 +25,18 @@ public class OutputView {
             Q. 종료
             """;
 
-    public void printMenu(LocalDate today) {
+    public void printMenu(LocalDate today) { // todo : 파라미터가 today 적절한가?
         System.out.printf(OUTPUT_MENU,
                 today.getMonthValue(),
                 today.getDayOfMonth(),
-                today.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA)
+                today.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA) // todo : 요일 반환 메서드 분리 필요
         );
     }
 
     public void printAttendanceRecord(AttendanceResponse response) {
-
         LocalDateTime dateTime = response.dateTime();
 
-        String timeContent = dateTime.toLocalTime().toString();
+        String timeContent = dateTime.toLocalTime().toString(); // todo : 파싱 메서드 분리 고려
         if (dateTime.toLocalTime().equals(LocalTime.MIN)) {
             timeContent = "--:--";
         }

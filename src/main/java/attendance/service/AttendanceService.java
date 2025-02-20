@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class AttendanceService {
+public class AttendanceService { // todo : 최대한 메서드 분리 작업
 
     private final InputView inputView;
     private final AttendanceManager attendanceManager;
@@ -44,10 +44,10 @@ public class AttendanceService {
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
         int day = Integer.parseInt(inputView.readDateForUpdate());
-        LocalDate newDate = nowDate.withDayOfMonth(day);
+        LocalDate newDate = nowDate.withDayOfMonth(day); // todo : 파싱, 검증 필요
 
         String time = inputView.readAttendanceTimeForUpdate();
-        LocalTime parseTime = LocalTime.parse(time);
+        LocalTime parseTime = LocalTime.parse(time); // todo : 파싱, 검증 필요
 
         Attendance findAttendance = attendances.find(newDate);
         AttendanceResponse before = findAttendance.createResponse();
@@ -74,8 +74,8 @@ public class AttendanceService {
         return attendanceManager.searchWarnedCrews();
     }
 
-    public void initializeAttendance() {
-        List<String> lines = FileUtil.readFile("attendances.csv");
+    public void initializeAttendance() { // todo : 메서드 분리 및 서비스 클래스 별도 관리 고려
+        List<String> lines = FileUtil.readFile("attendances.csv"); // todo : 파일 상수 분리
         for (String line : lines) {
             List<String> nicknameAndDateTime = List.of(line.split(","));
 

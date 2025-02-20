@@ -11,7 +11,7 @@ public enum EducationTime {
     private static final DayOfWeek MONDAY_DAY_OF_WEEK = DayOfWeek.MONDAY;
 
     private final LocalTime startTime;
-    private final LocalTime endTime;
+    private final LocalTime endTime; // todo : 삭제 고려
 
     EducationTime(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;

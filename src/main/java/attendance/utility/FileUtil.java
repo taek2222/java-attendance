@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-public class FileUtil {
+public class FileUtil { // todo : 상속 및 객체 생성 방지
 
     private static final String DIRECTORY_PATH = "src/main/resources/";
 
@@ -27,6 +27,6 @@ public class FileUtil {
 
     private static List<String> parseLines(BufferedReader fileReader) {
         List<String> lines = fileReader.lines().toList();
-        return lines.subList(1, lines.size());
+        return lines.subList(1, lines.size()); // todo : 1 상수 분리 후 의미 적용
     }
 }
