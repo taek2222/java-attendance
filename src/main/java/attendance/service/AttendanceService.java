@@ -31,10 +31,12 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         String nickname = inputView.readNickname();
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
+        Attendance findAttendance = attendances.find(nowDate);
+        validateAlreadyAttendance(findAttendance);
+
         String time = inputView.readAttendanceTime(); // todo : 파싱, 검증 필요
         LocalTime parseTime = LocalTime.parse(time);
 
-        Attendance findAttendance = attendances.find(nowDate);
         findAttendance.updateTime(parseTime);
         return findAttendance.createResponse();
     }
@@ -91,6 +93,12 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
             Attendances attendances = attendanceManager.findCrewAttendance(nicknameAndDateTime.getFirst());
             Attendance attendance = attendances.find(parsedDateTime.toLocalDate());
             attendance.updateTime(parsedDateTime.toLocalTime());
+        }
+    }
+
+    private void validateAlreadyAttendance(Attendance attendance) {
+        if (attendance.isAlreadyCheck()) {
+            throw new IllegalArgumentException("[ERROR] 이미 출석을 완료하셨습니다. 수정 기능을 이용해주세요.");
         }
     }
 }

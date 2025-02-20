@@ -19,6 +19,10 @@ public class Attendance {
         return dateTime.toLocalDate().isEqual(date);
     }
 
+    public boolean isAlreadyCheck() {
+        return !dateTime.toLocalTime().equals(LocalTime.MIN);
+    }
+
     public void updateTime(LocalTime givenTime) {
         LocalDateTime newDateTime = LocalDateTime.of(dateTime.toLocalDate(), givenTime);
         dateTime = newDateTime;
