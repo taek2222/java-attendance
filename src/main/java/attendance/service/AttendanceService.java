@@ -45,7 +45,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         String nickname = inputView.readNickNameForUpdate();
         Attendances attendances = this.attendanceManager.findCrewAttendance(nickname);
 
-        int day = Integer.parseInt(inputView.readDateForUpdate());
+        int day = inputView.readDateForUpdate();
         LocalDate newDate = nowDate.withDayOfMonth(day); // todo : 파싱, 검증 필요
 
         String time = inputView.readAttendanceTimeForUpdate();

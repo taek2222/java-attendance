@@ -2,6 +2,8 @@ package attendance.view;
 
 import java.util.Scanner;
 
+import static attendance.view.InputValidator.validateIsNumeric;
+
 public class InputView { // todo : 상수 분리, 최소한의 검증 후 반환
 
     private static final Scanner console = new Scanner(System.in);
@@ -25,9 +27,12 @@ public class InputView { // todo : 상수 분리, 최소한의 검증 후 반환
         return console.nextLine();
     }
 
-    public String readDateForUpdate() {
+    public int readDateForUpdate() {
         System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
-        return console.nextLine();
+        String input = console.nextLine();
+
+        validateIsNumeric(input);
+        return Integer.parseInt(input);
     }
 
     public String readAttendanceTimeForUpdate() {
