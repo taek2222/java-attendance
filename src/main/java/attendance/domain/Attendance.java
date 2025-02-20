@@ -1,6 +1,6 @@
 package attendance.domain;
 
-import attendance.dto.AttendanceResponse;
+import attendance.dto.response.AttendanceRecord;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -37,7 +37,7 @@ public class Attendance {
         return dateTime.toLocalDate().isBefore(date);
     }
 
-    public AttendanceResponse createResponse() {
-        return new AttendanceResponse(dateTime, status.getName());
+    public AttendanceRecord createResponse() {
+        return new AttendanceRecord(dateTime, status.getName());
     }
 }

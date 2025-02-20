@@ -5,12 +5,12 @@ import static attendance.utility.DateTimeParser.parseDateByDay;
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceManager;
 import attendance.domain.Attendances;
-import attendance.dto.AttendanceGroupByStatus;
-import attendance.dto.AttendanceRecordUntilToday;
-import attendance.dto.AttendanceResponse;
-import attendance.dto.AttendanceSearchResult;
-import attendance.dto.AttendanceUpdateResult;
-import attendance.dto.WarnedStudentResponses;
+import attendance.dto.response.AttendanceGroupByStatus;
+import attendance.dto.response.AttendanceRecordUntilToday;
+import attendance.dto.response.AttendanceRecord;
+import attendance.dto.response.AttendanceSearchResult;
+import attendance.dto.response.AttendanceUpdateResult;
+import attendance.dto.response.WarnedStudents;
 import attendance.utility.DateTimeParser;
 import attendance.view.InputView;
 import java.time.LocalDate;
@@ -26,7 +26,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         this.attendanceManager = attendanceManager;
     }
 
-    public AttendanceResponse processAttendance(LocalDate today) {
+    public AttendanceRecord processAttendance(LocalDate today) {
         Attendances attendances = findAttendance(false);
 
         Attendance findAttendance = attendances.find(today);
@@ -45,7 +45,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         LocalTime time = parseTime(true);
 
         Attendance findAttendance = attendances.find(date);
-        AttendanceResponse before = findAttendance.createResponse();
+        AttendanceRecord before = findAttendance.createResponse();
 
         findAttendance.updateTime(time);
         return new AttendanceUpdateResult(before, findAttendance.createResponse());
@@ -65,7 +65,7 @@ public class AttendanceService { // todo : 최대한 메서드 분리 작업
         return new AttendanceSearchResult(nickname, recordUntilToday, groupByStatus);
     }
 
-    public WarnedStudentResponses processWarnedStudent(LocalDate today) {
+    public WarnedStudents processWarnedStudent(LocalDate today) {
         return attendanceManager.searchWarnedCrews(today);
     }
 

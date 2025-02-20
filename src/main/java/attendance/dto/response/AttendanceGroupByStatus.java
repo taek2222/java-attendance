@@ -1,4 +1,4 @@
-package attendance.dto;
+package attendance.dto.response;
 
 public record AttendanceGroupByStatus(
         int expulsion,

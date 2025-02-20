@@ -1,7 +1,7 @@
 package attendance.domain;
 
-import attendance.dto.WarnedStudentResponse;
-import attendance.dto.WarnedStudentResponses;
+import attendance.dto.response.WarnedStudent;
+import attendance.dto.response.WarnedStudents;
 import attendance.utility.DateGenerator;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -34,16 +34,16 @@ public class AttendanceManager {
         attendances.put(name, newAttendances);
     }
 
-    public WarnedStudentResponses searchWarnedCrews(LocalDate date) {
+    public WarnedStudents searchWarnedCrews(LocalDate date) {
         Set<String> nicknames = attendances.keySet();
-        List<WarnedStudentResponse> responses = nicknames.stream()
-                .map(nickname -> new WarnedStudentResponse(nickname,
+        List<WarnedStudent> responses = nicknames.stream()
+                .map(nickname -> new WarnedStudent(nickname,
                         attendances.get(nickname).createCountUntilYesterday(date)))
-                .filter(response -> !response.attendanceGroupByStatus().warning()
+                .filter(response -> !response.groupByStatus().warning()
                         .equals(AttendanceWarningType.NONE.getName()))
                 .toList();
 
-        return new WarnedStudentResponses(responses.stream().sorted().toList());
+        return new WarnedStudents(responses.stream().sorted().toList());
     }
 
     public boolean isNotContainNickname(String nickname) {

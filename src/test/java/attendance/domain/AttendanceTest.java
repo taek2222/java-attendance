@@ -6,7 +6,7 @@ import static attendance.domain.AttendanceStatusType.LATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import attendance.dto.AttendanceResponse;
+import attendance.dto.response.AttendanceRecord;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.stream.Stream;
@@ -50,7 +50,7 @@ class AttendanceTest {
 
         // when
         attendance.updateTime(newTime);
-        AttendanceResponse response = attendance.createResponse();
+        AttendanceRecord response = attendance.createResponse();
 
         // then
         assertThat(response.dateTime().toLocalTime())

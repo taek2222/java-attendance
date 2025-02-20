@@ -8,10 +8,10 @@ import static attendance.controller.AttendanceMenu.WARNED_CREW;
 import static attendance.controller.AttendanceMenu.find;
 
 import attendance.config.AppConfig;
-import attendance.dto.AttendanceResponse;
-import attendance.dto.AttendanceSearchResult;
-import attendance.dto.AttendanceUpdateResult;
-import attendance.dto.WarnedStudentResponses;
+import attendance.dto.response.AttendanceRecord;
+import attendance.dto.response.AttendanceSearchResult;
+import attendance.dto.response.AttendanceUpdateResult;
+import attendance.dto.response.WarnedStudents;
 import attendance.service.AttendanceInitService;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
@@ -60,7 +60,7 @@ public class AttendanceController {
         while (true) {
             try {
                 if (menu == WARNED_CREW) {
-                    WarnedStudentResponses response = attendanceService.processWarnedStudent(today);
+                    WarnedStudents response = attendanceService.processWarnedStudent(today);
                     outputView.printWarnedStudents(response);
                 }
                 return;
@@ -102,7 +102,7 @@ public class AttendanceController {
         while (true) {
             try {
                 if (menu == CHECK) {
-                    AttendanceResponse response = attendanceService.processAttendance(today);
+                    AttendanceRecord response = attendanceService.processAttendance(today);
                     outputView.printAttendanceRecord(response);
                 }
                 return;

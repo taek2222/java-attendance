@@ -2,7 +2,7 @@ package attendance.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import attendance.dto.AttendanceResponse;
+import attendance.dto.response.AttendanceRecord;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ class AttendancesTest {
         Attendance attendance = new Attendance(givenDate);
 
         attendances.add(attendance);
-        AttendanceResponse actualResponse = attendances.find(givenDate).createResponse();
+        AttendanceRecord actualResponse = attendances.find(givenDate).createResponse();
 
         assertThat(actualResponse.dateTime().toLocalDate()).isEqualTo(givenDate);
     }
@@ -35,7 +35,7 @@ class AttendancesTest {
 
         // when
         attendances.find(givenDate);
-        AttendanceResponse actualResponse = attendances.find(givenDate).createResponse();
+        AttendanceRecord actualResponse = attendances.find(givenDate).createResponse();
 
         // then
         assertThat(actualResponse.dateTime().toLocalDate()).isEqualTo(givenDate);

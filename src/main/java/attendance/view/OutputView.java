@@ -1,11 +1,11 @@
 package attendance.view;
 
-import attendance.dto.AttendanceGroupByStatus;
-import attendance.dto.AttendanceResponse;
-import attendance.dto.AttendanceSearchResult;
-import attendance.dto.AttendanceUpdateResult;
-import attendance.dto.WarnedStudentResponse;
-import attendance.dto.WarnedStudentResponses;
+import attendance.dto.response.AttendanceGroupByStatus;
+import attendance.dto.response.AttendanceRecord;
+import attendance.dto.response.AttendanceSearchResult;
+import attendance.dto.response.AttendanceUpdateResult;
+import attendance.dto.response.WarnedStudent;
+import attendance.dto.response.WarnedStudents;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,7 +33,7 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
         );
     }
 
-    public void printAttendanceRecord(AttendanceResponse response) {
+    public void printAttendanceRecord(AttendanceRecord response) {
         LocalDateTime dateTime = response.dateTime();
 
         String timeContent = dateTime.toLocalTime().toString(); // todo : 파싱 메서드 분리 고려
@@ -60,7 +60,7 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
 
     public void printAttendUpdateResult(AttendanceSearchResult result) {
         System.out.printf(NEW_LINE + "이번 달 %s의 출석 기록입니다." + NEW_LINE, result.nickname());
-        List<AttendanceResponse> response = result.recordUntilToday().responses();
+        List<AttendanceRecord> response = result.records().records();
 
         response.forEach(this::printAttendanceRecord);
         System.out.println();
@@ -81,15 +81,15 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
         System.out.printf("%s 대상자입니다.", groupByStatus.warning()); // todo : 출력 순서랑 이후 날짜 중재
     }
 
-    public void printWarnedStudents(WarnedStudentResponses response) {
+    public void printWarnedStudents(WarnedStudents response) {
         System.out.print(NEW_LINE + "제적 위험자 조회 결과");
-        List<WarnedStudentResponse> warnedStudents = response.responses();
+        List<WarnedStudent> warnedStudents = response.students();
         warnedStudents.forEach(student -> {
             System.out.printf("\n- %s: 결석 %d회, 지각 %d회 (%s)",
                     student.name(),
-                    student.attendanceGroupByStatus().expulsion(),
-                    student.attendanceGroupByStatus().late(),
-                    student.attendanceGroupByStatus().warning()
+                    student.groupByStatus().expulsion(),
+                    student.groupByStatus().late(),
+                    student.groupByStatus().warning()
             );
         });
     }
