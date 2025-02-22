@@ -16,7 +16,7 @@ public class AttendanceSystem {
     }
 
     public void validateNicknameExists(String nickname) {
-        if (attendanceManager.containsNickname(nickname)) {
+        if (!attendanceManager.containsNickname(nickname)) {
             throw new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다.");
         }
     }
