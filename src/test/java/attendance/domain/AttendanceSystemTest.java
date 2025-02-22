@@ -50,11 +50,10 @@ class AttendanceSystemTest {
     void 등록되지_않은_닉네임으로_출석_체크시_에러가_발생한다() {
         // given
         String nickname = "이든";
-        LocalDateTime dateTime = LocalDateTime.of(dateGenerator.now(), LocalTime.of(10, 0));
 
         // when & then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> attendanceSystem.processAttendanceCheck(dateTime, nickname))
+                .isThrownBy(() -> attendanceSystem.validateNicknameExists(nickname))
                 .withMessage("[ERROR] 등록되지 않은 닉네임입니다.");
     }
 
