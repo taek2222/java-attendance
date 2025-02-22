@@ -4,7 +4,9 @@ import attendance.config.AppConfig;
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceInit;
 import attendance.domain.AttendanceManager;
+import attendance.domain.AttendanceSystem;
 import attendance.domain.Attendances;
+import attendance.domain.Holiday;
 import attendance.dto.response.AttendanceGroupByStatus;
 import attendance.dto.response.AttendanceRecord;
 import attendance.dto.response.AttendanceRecordUntilToday;
@@ -17,6 +19,7 @@ import attendance.view.InputView;
 import attendance.view.OutputView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static attendance.controller.AttendanceMenu.CHECK;
@@ -32,13 +35,17 @@ public class AttendanceController {
     private final InputView inputView;
     private final OutputView outputView;
     private final DateGenerator dateGenerator;
+    private final Holiday holiday;
     private final AttendanceManager attendanceManager;
+    private final AttendanceSystem attendanceSystem;
 
     public AttendanceController(AppConfig appConfig) {
         this.inputView = appConfig.getInputView();
         this.outputView = appConfig.getOutputView();
         this.dateGenerator = appConfig.getDateGenerator();
+        this.holiday = appConfig.getHoliday();
         this.attendanceManager = appConfig.getAttendanceManager();
+        this.attendanceSystem = appConfig.getAttendanceSystem();
     }
 
     public void run() {
@@ -65,8 +72,15 @@ public class AttendanceController {
 
     private void processAttendanceCheck(AttendanceMenu menu, LocalDate today) {
         if (menu == CHECK) {
-            AttendanceRecord response = processAttendance(today);
-            outputView.printAttendanceRecord(response);
+            holiday.validateHoliday(today);
+
+            String nickname = inputView.readNickname(false);
+            attendanceSystem.validateNicknameExists(nickname);
+
+            LocalDateTime dateTime = LocalDateTime.of(dateGenerator.now(), parseTime(false));
+
+            Attendance attendance = attendanceSystem.processAttendanceCheck(dateTime, nickname);
+            outputView.printAttendanceRecord(attendance);
         }
     }
 
@@ -96,18 +110,6 @@ public class AttendanceController {
         return find(inputView.readMenuCommand());
     }
 
-    public AttendanceRecord processAttendance(LocalDate today) {
-        Attendances attendances = findAttendance(false);
-
-        Attendance findAttendance = attendances.find(today);
-        validateAlreadyAttendance(findAttendance);
-
-        LocalTime parseTime = parseTime(false);
-
-        findAttendance.updateTime(parseTime);
-        return findAttendance.createResponse();
-    }
-
     public AttendanceUpdateResult processUpdateAttendance(LocalDate today) {
         Attendances attendances = findAttendance(true);
 
@@ -117,7 +119,7 @@ public class AttendanceController {
         Attendance findAttendance = attendances.find(date);
         AttendanceRecord before = findAttendance.createResponse();
 
-        findAttendance.updateTime(time);
+//        findAttendance.updateTime(time);
         return new AttendanceUpdateResult(before, findAttendance.createResponse());
     }
 
