@@ -3,7 +3,10 @@ package attendance.domain;
 import attendance.dto.response.WarnedStudent;
 import attendance.dto.response.WarnedStudents;
 import attendance.utility.DateGenerator;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +30,9 @@ public class AttendanceManager {
 
         Attendances newAttendances = new Attendances();
         IntStream.range(1, dayAllCount + 1)
-                .mapToObj(index -> dateGenerator.now().withDayOfMonth(index))
-                .filter(date -> !holiday.isHoliday(date))
-                .forEach(date -> newAttendances.add(new Attendance(date)));
+                .mapToObj(index -> LocalDateTime.of(dateGenerator.now().withDayOfMonth(index), LocalTime.MIN))
+                .filter(dateTime -> !holiday.isHoliday(dateTime.toLocalDate()))
+                .forEach(dateTime -> newAttendances.add(new Attendance(dateTime)));
 
         attendances.put(name, newAttendances);
     }

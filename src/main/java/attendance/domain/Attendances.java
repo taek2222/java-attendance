@@ -5,6 +5,7 @@ import attendance.dto.response.AttendanceRecord;
 import attendance.dto.response.AttendanceRecordUntilToday;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,16 @@ public class Attendances {
                 .filter(attendance -> attendance.isEqualDate(date))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 서버 오류가 발생했습니다."));
+    }
+
+    public Attendance update(LocalDateTime dateTime) {
+        Attendance oldAttendance = find(dateTime.toLocalDate());
+        attendances.remove(oldAttendance);
+
+        Attendance updateAttendance = new Attendance(dateTime);
+        attendances.add(updateAttendance);
+
+        return updateAttendance;
     }
 
     public AttendanceGroupByStatus createCountUntilYesterday(LocalDate date) {
