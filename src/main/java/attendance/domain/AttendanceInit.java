@@ -1,22 +1,19 @@
-package attendance.service;
+package attendance.domain;
 
-import attendance.domain.Attendance;
-import attendance.domain.AttendanceManager;
-import attendance.domain.Attendances;
 import attendance.utility.DateTimeParser;
 import attendance.utility.FileUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class AttendanceInitService {
+public class AttendanceInit {
 
     private static final String INIT_FILE_NAME = "attendances.csv";
     private static final String INFO_DELIMITER = ",";
 
     private final AttendanceManager attendanceManager;
 
-    public AttendanceInitService(AttendanceManager attendanceManager) {
+    public AttendanceInit(AttendanceManager attendanceManager) {
         this.attendanceManager = attendanceManager;
     }
 

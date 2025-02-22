@@ -1,11 +1,12 @@
 package attendance.controller;
 
 import attendance.config.AppConfig;
+import attendance.domain.AttendanceInit;
+import attendance.domain.AttendanceManager;
 import attendance.dto.response.AttendanceRecord;
 import attendance.dto.response.AttendanceSearchResult;
 import attendance.dto.response.AttendanceUpdateResult;
 import attendance.dto.response.WarnedStudents;
-import attendance.service.AttendanceInitService;
 import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
@@ -25,19 +26,20 @@ public class AttendanceController {
     private final InputView inputView;
     private final OutputView outputView;
     private final DateGenerator dateGenerator;
-    private final AttendanceInitService attendanceInitService;
+    private final AttendanceManager attendanceManager;
     private final AttendanceService attendanceService;
 
     public AttendanceController(AppConfig appConfig) {
         this.inputView = appConfig.getInputView();
         this.outputView = appConfig.getOutputView();
         this.dateGenerator = appConfig.getDateGenerator();
-        this.attendanceInitService = appConfig.getAttendanceInitService();
+        this.attendanceManager = appConfig.getAttendanceManager();
         this.attendanceService = appConfig.getAttendanceService();
     }
 
     public void run() {
-        attendanceInitService.initAttendances();
+        AttendanceInit attendanceInit = new AttendanceInit(attendanceManager);
+        attendanceInit.initAttendances();
 
         while (true) {
             LocalDate today = dateGenerator.now();
