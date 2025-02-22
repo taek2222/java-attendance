@@ -1,12 +1,14 @@
 package attendance.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import attendance.dto.response.AttendanceRecord;
-import java.time.LocalDate;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.stream.IntStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AttendancesTest {
 
@@ -14,13 +16,13 @@ class AttendancesTest {
     @Test
     void 출석을_추가할_수_있다() {
         Attendances attendances = new Attendances();
-        LocalDate givenDate = LocalDate.of(2024, 12, 5);
-        Attendance attendance = new Attendance(givenDate);
+        LocalDateTime givenDateTime = LocalDateTime.of(2024, 12, 5, 10, 0);
+        Attendance attendance = new Attendance(givenDateTime);
 
         attendances.add(attendance);
-        AttendanceRecord actualResponse = attendances.find(givenDate).createResponse();
+        AttendanceRecord actualResponse = attendances.find(givenDateTime.toLocalDate()).createResponse();
 
-        assertThat(actualResponse.dateTime().toLocalDate()).isEqualTo(givenDate);
+        assertThat(actualResponse.dateTime().toLocalDate()).isEqualTo(givenDateTime);
     }
 
     @DisplayName("해당 날짜의 출석을 찾을 수 있다.")
@@ -29,8 +31,8 @@ class AttendancesTest {
         // given
         Attendances attendances = new Attendances();
         IntStream.range(1, 8)
-                .mapToObj(day -> LocalDate.of(2024, 12, day))
-                .forEach(date -> attendances.add(new Attendance(date)));
+                .mapToObj(day -> LocalDateTime.of(2024, 12, day, 10, 0))
+                .forEach(dateTime -> attendances.add(new Attendance(dateTime)));
         LocalDate givenDate = LocalDate.of(2024, 12, 5);
 
         // when
@@ -40,5 +42,4 @@ class AttendancesTest {
         // then
         assertThat(actualResponse.dateTime().toLocalDate()).isEqualTo(givenDate);
     }
-
 }
