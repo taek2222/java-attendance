@@ -33,7 +33,7 @@ public class AttendanceInit {
     }
 
     private void addNewCrew(String nickname) {
-        if (attendanceManager.isNotContainNickname(nickname)) {
+        if (!attendanceManager.containsNickname(nickname)) {
             attendanceManager.addCrew(nickname);
         }
     }
