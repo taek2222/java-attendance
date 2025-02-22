@@ -1,12 +1,5 @@
 package attendance.controller;
 
-import static attendance.controller.AttendanceMenu.CHECK;
-import static attendance.controller.AttendanceMenu.QUIT;
-import static attendance.controller.AttendanceMenu.SEARCH;
-import static attendance.controller.AttendanceMenu.UPDATE;
-import static attendance.controller.AttendanceMenu.WARNED_CREW;
-import static attendance.controller.AttendanceMenu.find;
-
 import attendance.config.AppConfig;
 import attendance.dto.response.AttendanceRecord;
 import attendance.dto.response.AttendanceSearchResult;
@@ -17,7 +10,15 @@ import attendance.service.AttendanceService;
 import attendance.utility.DateGenerator;
 import attendance.view.InputView;
 import attendance.view.OutputView;
+
 import java.time.LocalDate;
+
+import static attendance.controller.AttendanceMenu.CHECK;
+import static attendance.controller.AttendanceMenu.QUIT;
+import static attendance.controller.AttendanceMenu.SEARCH;
+import static attendance.controller.AttendanceMenu.UPDATE;
+import static attendance.controller.AttendanceMenu.WARNED_CREW;
+import static attendance.controller.AttendanceMenu.find;
 
 public class AttendanceController {
 
@@ -57,69 +58,35 @@ public class AttendanceController {
     }
 
     private void processAttendanceWarnedCrew(AttendanceMenu menu, LocalDate today) {
-        while (true) {
-            try {
-                if (menu == WARNED_CREW) {
-                    WarnedStudents response = attendanceService.processWarnedStudent(today);
-                    outputView.printWarnedStudents(response);
-                }
-                return;
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
+        if (menu == WARNED_CREW) {
+            WarnedStudents response = attendanceService.processWarnedStudent(today);
+            outputView.printWarnedStudents(response);
         }
     }
 
     private void processAttendanceSearch(AttendanceMenu menu, LocalDate today) {
-        while (true) {
-            try {
-                if (menu == SEARCH) {
-                    AttendanceSearchResult response = attendanceService.processAttendanceSearch(today);
-                    outputView.printAttendUpdateResult(response);
-                }
-                return;
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
+        if (menu == SEARCH) {
+            AttendanceSearchResult response = attendanceService.processAttendanceSearch(today);
+            outputView.printAttendUpdateResult(response);
         }
     }
 
     private void processAttendanceUpdate(AttendanceMenu menu, LocalDate today) {
-        while (true) {
-            try {
-                if (menu == UPDATE) {
-                    AttendanceUpdateResult response = attendanceService.processUpdateAttendance(today);
-                    outputView.printAttendUpdateResult(response);
-                }
-                return;
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
+        if (menu == UPDATE) {
+            AttendanceUpdateResult response = attendanceService.processUpdateAttendance(today);
+            outputView.printAttendUpdateResult(response);
         }
     }
 
     private void processAttendanceCheck(AttendanceMenu menu, LocalDate today) {
-        while (true) {
-            try {
-                if (menu == CHECK) {
-                    AttendanceRecord response = attendanceService.processAttendance(today);
-                    outputView.printAttendanceRecord(response);
-                }
-                return;
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
+        if (menu == CHECK) {
+            AttendanceRecord response = attendanceService.processAttendance(today);
+            outputView.printAttendanceRecord(response);
         }
     }
 
     private AttendanceMenu selectMenu(LocalDate today) {
-        while (true) {
-            try {
-                outputView.printMenu(today);
-                return find(inputView.readMenuCommand());
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
-        }
+        outputView.printMenu(today);
+        return find(inputView.readMenuCommand());
     }
 }
