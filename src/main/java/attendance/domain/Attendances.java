@@ -24,6 +24,11 @@ public class Attendances {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 서버 오류가 발생했습니다."));
     }
 
+    public Attendance checkAndUpdateAttendance(LocalDateTime dateTime) {
+        validateAlreadyAttendance(dateTime.toLocalDate());
+        return this.update(dateTime);
+    }
+
     public Attendance update(LocalDateTime dateTime) {
         Attendance oldAttendance = find(dateTime.toLocalDate());
         attendances.remove(oldAttendance);
@@ -65,5 +70,11 @@ public class Attendances {
                 .filter(attendance -> attendance.isBefore(date))
                 .filter(attendance -> attendance.isEqualsStatus(status))
                 .count();
+    }
+
+    private void validateAlreadyAttendance(LocalDate date) {
+        if (find(date).isAlreadyCheck()) {
+            throw new IllegalArgumentException("[ERROR] 이미 출석을 완료하셨습니다. 수정 기능을 이용해주세요.");
+        }
     }
 }

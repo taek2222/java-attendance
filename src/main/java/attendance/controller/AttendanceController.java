@@ -148,10 +148,4 @@ public class AttendanceController {
         String time = inputView.readAttendanceTime(isForUpdated);
         return DateTimeParser.parseTime(time);
     }
-
-    private void validateAlreadyAttendance(Attendance attendance) {
-        if (attendance.isAlreadyCheck()) {
-            throw new IllegalArgumentException("[ERROR] 이미 출석을 완료하셨습니다. 수정 기능을 이용해주세요.");
-        }
-    }
 }
