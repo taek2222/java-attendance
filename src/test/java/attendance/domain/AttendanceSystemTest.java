@@ -1,9 +1,11 @@
 package attendance.domain;
 
-import attendance.utility.CurrentDateGeneratorImpl;
+import attendance.utility.DateGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,27 +16,36 @@ class AttendanceSystemTest {
     @Test
     void 크루의_출석_데이터를_저장한다() {
         // given
+        DateGenerator dateGenerator = new MockingDateGenerator();
         AttendanceManager attendanceManager = new AttendanceManager(
                 new Holiday(),
-                new CurrentDateGeneratorImpl()
+                dateGenerator
         );
 
-        AttendanceInit attendanceInit = new AttendanceInit(attendanceManager);
-        attendanceInit.initAttendances();
-
-        AttendanceSystem attendanceSystem = new AttendanceSystem(attendanceManager);
-
-        LocalTime givenTime = LocalTime.of(10, 8);
         String nickname = "이든";
 
+        attendanceManager.addCrew(nickname);
+        AttendanceSystem attendanceSystem = new AttendanceSystem(attendanceManager);
+
+        LocalDate nowDate = dateGenerator.now();
+        LocalDateTime givenDateTime = LocalDateTime.of(nowDate, LocalTime.of(10, 6));
+
         // when
-        Attendance result = attendanceSystem.processAttendanceCheck(givenTime, nickname);
+        Attendance result = attendanceSystem.processAttendanceCheck(givenDateTime, nickname);
 
         // then
-        assertThat(result.getDateTime().toLocalTime())
-                .isEqualTo(givenTime);
+        assertThat(result.getDateTime())
+                .isEqualTo(givenDateTime);
 
         assertThat(result.getStatus())
                 .isEqualTo(AttendanceStatusType.LATE);
+    }
+
+    private static class MockingDateGenerator implements DateGenerator {
+
+        @Override
+        public LocalDate now() {
+            return LocalDate.of(2024, 12, 5);
+        }
     }
 }
