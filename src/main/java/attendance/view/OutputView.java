@@ -1,11 +1,13 @@
 package attendance.view;
 
+import attendance.domain.Attendance;
 import attendance.dto.response.AttendanceGroupByStatus;
 import attendance.dto.response.AttendanceRecord;
 import attendance.dto.response.AttendanceSearchResult;
 import attendance.dto.response.AttendanceUpdateResult;
 import attendance.dto.response.WarnedStudent;
 import attendance.dto.response.WarnedStudents;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -47,6 +49,23 @@ public class OutputView { // todo : 상수 분리 적용 필요, response 파라
                 dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA),
                 timeContent,
                 response.status()
+        );
+    }
+
+    public void printAttendanceRecord(Attendance attendance) {
+        LocalDateTime dateTime = attendance.getDateTime();
+
+        String timeContent = dateTime.toLocalTime().toString(); // todo : 파싱 메서드 분리 고려
+        if (dateTime.toLocalTime().equals(LocalTime.MIN)) {
+            timeContent = "--:--";
+        }
+
+        System.out.printf(NEW_LINE + "%d월 %d일 %s %s (%s)",
+                dateTime.getMonthValue(),
+                dateTime.getDayOfMonth(),
+                dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREA),
+                timeContent,
+                attendance.getStatus().getName()
         );
     }
 
